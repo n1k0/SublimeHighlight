@@ -5,8 +5,15 @@ import sublime
 import sublime_plugin
 import tempfile
 
-from pygments.lexers import get_lexer_for_filename, guess_lexer
-from pygments.formatters import get_formatter_by_name
+try:
+    from pygments.lexers import get_lexer_for_filename, guess_lexer
+    from pygments.formatters import get_formatter_by_name
+except ImportError:
+    # crazy ST2 bug, see http://www.sublimetext.com/forum/viewtopic.php?f=6&t=1278
+    import sys
+    sys.path.insert(0, os.path.dirname(__file__))
+    from pygments.lexers import get_lexer_for_filename, guess_lexer
+    from pygments.formatters import get_formatter_by_name
 
 
 FORMATS = ('html', 'rtf',)
