@@ -1,0 +1,21 @@
+[
+    {
+        "id": "edit",
+        "children":
+        [
+            { "id": "highlight_export" },
+            { "children":
+                [
+                    { "id": "highligh_export_browser_html" },
+                    {
+                        "command": "highlight_export",
+                        "args": {
+                            "target": "browser",
+                            "output_type": "html"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+]

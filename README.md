@@ -1,4 +1,5 @@
-SublimeHighlight
-================
+SublimeText2 Highlight Export
+=============================
 
-An humble SublimeText2 package which export highlighted code
+This SublimeText2 plugin allows to export current editeds code as highlighted
+code using Pygments.

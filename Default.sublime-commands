@@ -1,0 +1,53 @@
+[
+    /* in SublimeText conversions */
+    {
+        "caption": "Highlight: convert to HTML",
+        "command": "highlight_export",
+        "args": {
+            "target": "sublime",
+            "output_type": "html"
+        }
+    },
+    {
+        "caption": "Highlight: convert to RTF",
+        "command": "highlight_export",
+        "args": {
+            "target": "sublime",
+            "output_type": "rtf"
+        }
+    },
+    /* in SublimeText rendering */
+    {
+        "caption": "Highlight: view as HTML",
+        "command": "highlight_export",
+        "args": {
+            "target": "external",
+            "output_type": "html"
+        }
+    },
+    {
+        "caption": "Highlight: view as RTF",
+        "command": "highlight_export",
+        "args": {
+            "target": "external",
+            "output_type": "rtf"
+        }
+    },
+    /* Clipboard exports */
+    {
+        "caption": "Highlight: copy to clipboard as HTML",
+        "command": "highlight_export",
+        "args": {
+            "target": "clipboard",
+            "output_type": "html"
+        }
+    },
+    {
+        "caption": "Highlight: copy to clipboard as RTF",
+        "command": "highlight_export",
+        "args": {
+            "target": "clipboard",
+            "output_type": "rtf"
+        }
+    }
+]
