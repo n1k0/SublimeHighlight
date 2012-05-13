@@ -23,7 +23,7 @@ def get_template(**kwargs):
     return HTML_TEMPLATE % dict(**kwargs)
 
 
-class HighlightExportCommand(sublime_plugin.TextCommand):
+class SublimeHighlightCommand(sublime_plugin.TextCommand):
     """Code highlighter command."""
 
     def run(self, edit, target='external', output_type='html'):
