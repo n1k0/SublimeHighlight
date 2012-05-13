@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+
+"""
+    TODO:
+    - allow to highlight current text selection only
+    - add a setting to store prefered theme name
+    - customize rendered HTML to ease choosing a new theme
+"""
+
 import desktop
 import os
 import pygments
