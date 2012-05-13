@@ -3,15 +3,60 @@
         "id": "edit",
         "children":
         [
-            { "id": "highlight_export" },
-            { "children":
+            {
+                "id": "sublime_highlight",
+                "caption": "SublimeHighlight",
+                "children":
                 [
-                    { "id": "highligh_export_browser_html" },
+                    /* in SublimeText conversions */
                     {
-                        "command": "highlight_export",
+                        "caption": "SublimeHighlight: convert to HTML",
+                        "command": "sublime_highlight",
                         "args": {
-                            "target": "browser",
+                            "target": "sublime",
                             "output_type": "html"
+                        }
+                    },
+                    {
+                        "caption": "SublimeHighlight: convert to RTF",
+                        "command": "sublime_highlight",
+                        "args": {
+                            "target": "sublime",
+                            "output_type": "rtf"
+                        }
+                    },
+                    /* in SublimeText rendering */
+                    {
+                        "caption": "SublimeHighlight: view as HTML",
+                        "command": "sublime_highlight",
+                        "args": {
+                            "target": "external",
+                            "output_type": "html"
+                        }
+                    },
+                    {
+                        "caption": "SublimeHighlight: view as RTF",
+                        "command": "sublime_highlight",
+                        "args": {
+                            "target": "external",
+                            "output_type": "rtf"
+                        }
+                    },
+                    /* Clipboard exports */
+                    {
+                        "caption": "SublimeHighlight: copy to clipboard as HTML",
+                        "command": "sublime_highlight",
+                        "args": {
+                            "target": "clipboard",
+                            "output_type": "html"
+                        }
+                    },
+                    {
+                        "caption": "SublimeHighlight: copy to clipboard as RTF",
+                        "command": "sublime_highlight",
+                        "args": {
+                            "target": "clipboard",
+                            "output_type": "rtf"
                         }
                     }
                 ]
