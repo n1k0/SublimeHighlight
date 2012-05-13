@@ -52,7 +52,8 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         pygmented = pygments.highlight(code, lexer, formatter)
 
         if target == 'external':
-            tmp_file = self.write_file('%s.%s' % (self.view.id(), pygmented, encoding), output_type)
+            filename = '%s.%s' % (self.view.id(), output_type,)
+            tmp_file = self.write_file(filename, pygmented, encoding=encoding)
             sublime.status_message(tmp_file)
             desktop.open(tmp_file)
         elif target == 'clipboard':
