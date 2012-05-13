@@ -54,6 +54,7 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         # pygmentize the code
         output_type = output_type if output_type in FORMATS else 'html'
         formatter = get_formatter_by_name(output_type, style='vim', full=True)
+        lexer = None
         if self.view.file_name():
             lexer = get_lexer_for_filename(self.view.file_name(), code)
         if not lexer:
