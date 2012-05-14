@@ -55,8 +55,9 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
             return
 
     def run(self, edit, target='external', output_type='html'):
-        if len(self.view.sel()) > 0:
-            region = self.view.sel()[0]
+        regions = self.view.sel()
+        if len(regions) > 0 and regions[0].size() > 0:
+            region = regions[0]
         else:
             region = sublime.Region(0, self.view.size())
         encoding = self.view.encoding()
@@ -71,7 +72,10 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         formatter = get_formatter_by_name(output_type, style='vim', full=True)
         lexer = None
         if self.view.file_name():
-            lexer = get_lexer_for_filename(self.view.file_name(), code)
+            try:
+                lexer = get_lexer_for_filename(self.view.file_name(), code)
+            except ClassNotFound:
+                pass
         if not lexer:
             lexer = self.guess_lexer_from_syntax()
         if not lexer:
