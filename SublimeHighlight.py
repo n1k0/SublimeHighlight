@@ -107,10 +107,11 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
             new_view.insert(new_edit, 0, pygmented)
             new_view.end_edit(new_edit)
 
-    def write_file(self, filename, contents):
+    def write_file(self, filename, contents, encoding=None):
         """Writes highlighted contents onto the filesystem."""
+        encoding = encoding if encoding is not None else self.encoding
         tmp_fullpath = os.path.join(tempfile.gettempdir(), filename)
         tmp_file = open(tmp_fullpath, 'w')
-        tmp_file.write(contents.encode(self.encoding))
+        tmp_file.write(contents.encode(encoding))
         tmp_file.close()
         return tmp_fullpath
