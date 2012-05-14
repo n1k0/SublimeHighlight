@@ -75,22 +75,30 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         except ClassNotFound:
             return
 
-    def run(self, edit, target='external', output_type='html'):
-        # pygmentize the code
-        output_type = output_type if output_type in FORMATS else 'html'
-        formatter = get_formatter_by_name(output_type, style='vim', full=True)
+    def get_formatter(self, output_type, style="vim", full=True):
+        return get_formatter_by_name(output_type, style=style, full=full)
+
+    def get_lexer(self, code=None):
+        code = code if code is not None else self.code
         lexer = None
         if self.view.file_name():
             try:
-                lexer = get_lexer_for_filename(self.view.file_name(),
-                    self.code)
+                lexer = get_lexer_for_filename(self.view.file_name(), code)
             except ClassNotFound:
                 pass
         if not lexer:
             lexer = self.guess_lexer_from_syntax()
         if not lexer:
-            lexer = guess_lexer(self.code)
-        pygmented = pygments.highlight(self.code, lexer, formatter)
+            lexer = guess_lexer(code)
+        return lexer
+
+    def highlight(self, output_type):
+        return pygments.highlight(self.code, self.get_lexer(),
+            self.get_formatter(output_type))
+
+    def run(self, edit, target='external', output_type='html'):
+        output_type = output_type if output_type in FORMATS else 'html'
+        pygmented = self.highlight(output_type)
 
         if target == 'external':
             filename = '%s.%s' % (self.view.id(), output_type,)
