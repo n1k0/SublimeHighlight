@@ -114,6 +114,8 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
             new_edit = new_view.begin_edit()
             new_view.insert(new_edit, 0, pygmented)
             new_view.end_edit(new_edit)
+        else:
+            sublime.error_message(u'Unsupported target "%s"' % target)
 
     def write_file(self, filename, contents, encoding=None):
         """Writes highlighted contents onto the filesystem."""
