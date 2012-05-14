@@ -2,7 +2,6 @@
 
 """
     TODO:
-    - allow to highlight current text selection only
     - add a setting to store prefered theme name
     - customize rendered HTML to ease choosing a new theme
 """
@@ -56,7 +55,10 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
             return
 
     def run(self, edit, target='external', output_type='html'):
-        region = sublime.Region(0, self.view.size())
+        if len(self.view.sel()) > 0:
+            region = self.view.sel()[0]
+        else:
+            region = sublime.Region(0, self.view.size())
         encoding = self.view.encoding()
         if encoding == 'Undefined':
             encoding = 'utf-8'
