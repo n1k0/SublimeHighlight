@@ -42,6 +42,27 @@ def get_template(**kwargs):
 class SublimeHighlightCommand(sublime_plugin.TextCommand):
     """Code highlighter command."""
 
+    @property
+    def code(self):
+        return self.view.substr(self.region)
+
+    @property
+    def encoding(self):
+        encoding = self.view.encoding()
+        if encoding == 'Undefined':
+            encoding = 'utf-8'
+        elif encoding == 'Western (Windows 1252)':
+            encoding = 'windows-1252'
+        return encoding
+
+    @property
+    def region(self):
+        regions = self.view.sel()
+        if len(regions) > 0 and regions[0].size() > 0:
+            return regions[0]
+        else:
+            return sublime.Region(0, self.view.size())
+
     def guess_lexer_from_syntax(self):
         syntax = self.view.settings().get('syntax')
         if not syntax:
@@ -55,36 +76,25 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
             return
 
     def run(self, edit, target='external', output_type='html'):
-        regions = self.view.sel()
-        if len(regions) > 0 and regions[0].size() > 0:
-            region = regions[0]
-        else:
-            region = sublime.Region(0, self.view.size())
-        encoding = self.view.encoding()
-        if encoding == 'Undefined':
-            encoding = 'utf-8'
-        elif encoding == 'Western (Windows 1252)':
-            encoding = 'windows-1252'
-        code = self.view.substr(region)
-
         # pygmentize the code
         output_type = output_type if output_type in FORMATS else 'html'
         formatter = get_formatter_by_name(output_type, style='vim', full=True)
         lexer = None
         if self.view.file_name():
             try:
-                lexer = get_lexer_for_filename(self.view.file_name(), code)
+                lexer = get_lexer_for_filename(self.view.file_name(),
+                    self.code)
             except ClassNotFound:
                 pass
         if not lexer:
             lexer = self.guess_lexer_from_syntax()
         if not lexer:
-            lexer = guess_lexer(code)
-        pygmented = pygments.highlight(code, lexer, formatter)
+            lexer = guess_lexer(self.code)
+        pygmented = pygments.highlight(self.code, lexer, formatter)
 
         if target == 'external':
             filename = '%s.%s' % (self.view.id(), output_type,)
-            tmp_file = self.write_file(filename, pygmented, encoding=encoding)
+            tmp_file = self.write_file(filename, pygmented)
             sublime.status_message(tmp_file)
             desktop.open(tmp_file)
         elif target == 'clipboard':
@@ -97,10 +107,10 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
             new_view.insert(new_edit, 0, pygmented)
             new_view.end_edit(new_edit)
 
-    def write_file(self, filename, contents, encoding='utf-8'):
+    def write_file(self, filename, contents):
         """Writes highlighted contents onto the filesystem."""
         tmp_fullpath = os.path.join(tempfile.gettempdir(), filename)
         tmp_file = open(tmp_fullpath, 'w')
-        tmp_file.write(contents.encode(encoding))
+        tmp_file.write(contents.encode(self.encoding))
         tmp_file.close()
         return tmp_fullpath
