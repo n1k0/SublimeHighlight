@@ -10,6 +10,7 @@
 import desktop
 import os
 import pygments
+import re
 import sublime
 import sublime_plugin
 import sys
@@ -19,8 +20,10 @@ import tempfile
 sys.path.insert(0, os.path.join(os.path.abspath(os.path.dirname(__file__)),
     'pygments'))
 
-from pygments.lexers import get_lexer_for_filename, guess_lexer
+from pygments.lexers import (get_lexer_by_name, get_lexer_for_filename,
+    guess_lexer)
 from pygments.formatters import get_formatter_by_name
+from pygments.util import ClassNotFound
 
 
 FORMATS = ('html', 'rtf',)
@@ -29,16 +32,28 @@ HTML_TEMPLATE = u"""<!DOCTYPE html>
 <meta charset="%(encoding)s">
 <title>%(title)s</title>
 <style>%(styles)s</style>
-<pre>%(highlighted)s</pre>
+%(highlighted)s
 """
 
 
 def get_template(**kwargs):
-    return HTML_TEMPLATE % dict(**kwargs)
+    return kwargs.get('template', HTML_TEMPLATE) % dict(**kwargs)
 
 
 class SublimeHighlightCommand(sublime_plugin.TextCommand):
     """Code highlighter command."""
+
+    def guess_lexer_from_syntax(self):
+        syntax = self.view.settings().get('syntax')
+        if not syntax:
+            return
+        match = re.match(r"Packages/.*/(.*?)\.tmLanguage$", syntax)
+        if not match:
+            return
+        try:
+            return get_lexer_by_name(match.group(1).lower())
+        except ClassNotFound:
+            return
 
     def run(self, edit, target='external', output_type='html'):
         region = sublime.Region(0, self.view.size())
@@ -55,6 +70,8 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         lexer = None
         if self.view.file_name():
             lexer = get_lexer_for_filename(self.view.file_name(), code)
+        if not lexer:
+            lexer = self.guess_lexer_from_syntax()
         if not lexer:
             lexer = guess_lexer(code)
         pygmented = pygments.highlight(code, lexer, formatter)
