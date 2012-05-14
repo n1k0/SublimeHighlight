@@ -1,0 +1,10 @@
+/*
+    SublimeHighlight default settings
+*/
+{
+    /* Full HTML page to generate? false = just a <div/> */
+    "full": true,
+
+    /* Pygments theme to use */
+    "theme": "default"
+}
