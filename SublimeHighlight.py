@@ -120,7 +120,7 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
             new_view = self.view.window().new_file()
             if output_type == 'html':
                 new_view.set_syntax_file('Packages/HTML/HTML.tmLanguage')
-            new_edit = new_vieiw.begin_edit()
+            new_edit = new_view.begin_edit()
             new_view.insert(new_edit, 0, pygmented)
             new_view.end_edit(new_edit)
         else:
