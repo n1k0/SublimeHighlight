@@ -13,6 +13,39 @@ Several commands are added to SublimeText2 when installed:
 - **SublimeHighlight: copy to clipboard as HTML**
 - **SublimeHighlight: copy to clipboard as RTF**
 
+Settings
+--------
+
+You can find a dedicated user settings file in the `Preferences > Package
+Settings > SublimeHighlight` menu, where you can choose the Pygments theme to
+use. Example `Settings - User` file:
+
+    {
+        "theme": "vim"
+    }
+
+Available themes are:
+
+- `autumn`
+- `borland`
+- `bw`
+- `colorful`
+- `default`
+- `emacs`
+- `friendly`
+- `fruity`
+- `manni`
+- `monokai`
+- `murphy`
+- `native`
+- `pastie`
+- `perldoc`
+- `rrt`
+- `tango`
+- `trac`
+- `vim`
+- `vs`
+
 Why this package?
 -----------------
 
