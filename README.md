@@ -6,12 +6,18 @@ export currently edited code to HTML or RTF using [Pygments](http://pygments.org
 
 Several commands are added to SublimeText2 when installed:
 
-- **SublimeHighlight: convert to HTML**
-- **SublimeHighlight: convert to RTF**
-- **SublimeHighlight: view as HTML**
-- **SublimeHighlight: view as RTF**
-- **SublimeHighlight: copy to clipboard as HTML**
-- **SublimeHighlight: copy to clipboard as RTF**
+- **SublimeHighlight: convert to HTML**: will convert current code to
+  highlighted HTML in a new SublimeText tab.
+- **SublimeHighlight: convert to RTF**: will convert current code to
+  highlighted RTF in a new SublimeText tab.
+- **SublimeHighlight: view as HTML**: will convert current code to highlighted
+  HTML and open it in your default browser.
+- **SublimeHighlight: view as RTF**: will convert current code to an RTF
+  document and open the generated file with your default program.
+- **SublimeHighlight: copy to clipboard as HTML**: will convert current code to
+  highlighted HTML and store it into the system clipboard.
+- **SublimeHighlight: copy to clipboard as RTF**: will convert current code to
+  raw highlighted RTF and store it into the system clipboard.
 
 Settings
 --------
