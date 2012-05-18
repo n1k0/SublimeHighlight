@@ -18,7 +18,7 @@
                             {
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/SublimeHighlight/SublimeHighlight.sublime-settings"
+                                    "file": "${packages}/Highlight/SublimeHighlight.sublime-settings"
                                 },
                                 "caption": "Settings – Default"
                             },
