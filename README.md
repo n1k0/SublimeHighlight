@@ -51,6 +51,13 @@ Available themes are:
 - `trac`
 - `vim`
 - `vs`
+ 
+You can add your own pygments files by copying the _theme_.py to `Packages/Highlight/pygments`, and adding your theme to the `STYLES_MAP` in `SublimeHighlight/pygments/styles/__init.py__`.  Eg.
+
+    #: Maps style names to 'submodule::classname'.
+    STYLE_MAP = {
+    'default':  'default::DefaultStyle',
+    'mytheme':  'mytheme::MyThemeStyle',
 
 Why this package?
 -----------------
