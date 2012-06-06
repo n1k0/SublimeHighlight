@@ -11,6 +11,7 @@ import pygments
 import re
 import sublime
 import sublime_plugin
+import subprocess
 import tempfile
 
 from pygments import highlight
@@ -115,7 +116,15 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
             sublime.status_message(tmp_file)
             desktop.open(tmp_file)
         elif target == 'clipboard':
-            sublime.set_clipboard(pygmented)
+            if desktop.get_desktop() == 'Mac OS X':
+                # on mac osx we have `pbcopy` :)
+                filename = '%s.%s' % (self.view.id(), output_type,)
+                tmp_file = self.write_file(filename, pygmented)
+                subprocess.call("cat %s | pbcopy -Prefer %s"
+                                % (tmp_file, output_type,), shell=True)
+                os.remove(tmp_file)
+            else:
+                sublime.set_clipboard(pygmented)
         elif target == 'sublime':
             new_view = self.view.window().new_file()
             if output_type == 'html':
