@@ -1,5 +1,69 @@
 [
     {
+        "id": "edit",
+        "children":
+        [
+            {
+                "id": "sublime_highlight",
+                "caption": "Highlight",
+                "children":
+                [
+                    /* in SublimeText conversions */
+                    {
+                        "caption": "Convert to HTML",
+                        "command": "sublime_highlight",
+                        "args": {
+                            "target": "sublime",
+                            "output_type": "html"
+                        }
+                    },
+                    {
+                        "caption": "Convert to RTF",
+                        "command": "sublime_highlight",
+                        "args": {
+                            "target": "sublime",
+                            "output_type": "rtf"
+                        }
+                    },
+                    /* in SublimeText rendering */
+                    {
+                        "caption": "View as HTML",
+                        "command": "sublime_highlight",
+                        "args": {
+                            "target": "external",
+                            "output_type": "html"
+                        }
+                    },
+                    {
+                        "caption": "View as RTF",
+                        "command": "sublime_highlight",
+                        "args": {
+                            "target": "external",
+                            "output_type": "rtf"
+                        }
+                    },
+                    /* Clipboard exports */
+                    {
+                        "caption": "Copy to clipboard as HTML",
+                        "command": "sublime_highlight",
+                        "args": {
+                            "target": "clipboard",
+                            "output_type": "html"
+                        }
+                    },
+                    {
+                        "caption": "Copy to clipboard as RTF",
+                        "command": "sublime_highlight",
+                        "args": {
+                            "target": "clipboard",
+                            "output_type": "rtf"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "caption": "Preferences",
         "mnemonic": "n",
         "id": "preferences",
@@ -31,70 +95,6 @@
                             },
                             { "caption": "-" }
                         ]
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": "edit",
-        "children":
-        [
-            {
-                "id": "sublime_highlight",
-                "caption": "SublimeHighlight",
-                "children":
-                [
-                    /* in SublimeText conversions */
-                    {
-                        "caption": "SublimeHighlight: convert to HTML",
-                        "command": "sublime_highlight",
-                        "args": {
-                            "target": "sublime",
-                            "output_type": "html"
-                        }
-                    },
-                    {
-                        "caption": "SublimeHighlight: convert to RTF",
-                        "command": "sublime_highlight",
-                        "args": {
-                            "target": "sublime",
-                            "output_type": "rtf"
-                        }
-                    },
-                    /* in SublimeText rendering */
-                    {
-                        "caption": "SublimeHighlight: view as HTML",
-                        "command": "sublime_highlight",
-                        "args": {
-                            "target": "external",
-                            "output_type": "html"
-                        }
-                    },
-                    {
-                        "caption": "SublimeHighlight: view as RTF",
-                        "command": "sublime_highlight",
-                        "args": {
-                            "target": "external",
-                            "output_type": "rtf"
-                        }
-                    },
-                    /* Clipboard exports */
-                    {
-                        "caption": "SublimeHighlight: copy to clipboard as HTML",
-                        "command": "sublime_highlight",
-                        "args": {
-                            "target": "clipboard",
-                            "output_type": "html"
-                        }
-                    },
-                    {
-                        "caption": "SublimeHighlight: copy to clipboard as RTF",
-                        "command": "sublime_highlight",
-                        "args": {
-                            "target": "clipboard",
-                            "output_type": "rtf"
-                        }
                     }
                 ]
             }
