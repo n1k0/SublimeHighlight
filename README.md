@@ -65,7 +65,7 @@ Available themes are:
 - `vim`
 - `vs`
 
-**Note: ** You can add your own pygments files by copying the `_theme_.py` to `Packages/Highlight/pygments`, and adding your theme to the `STYLES_MAP` in `SublimeHighlight/pygments/styles/__init.py__`.  Eg.:
+**Note:** You can add your own pygments files by copying the `_theme_.py` to `Packages/Highlight/pygments`, and adding your theme to the `STYLES_MAP` in `SublimeHighlight/pygments/styles/__init.py__`.  Eg.:
 
     # Maps style names to 'submodule::classname'.
     STYLE_MAP = {
@@ -75,7 +75,7 @@ Available themes are:
 
 ### Line numbering
 
-You can add line nulbering by setting the `linenos` option:
+You can add line numbering by setting the `linenos` option:
 
     {
         "linenos": "inline"
