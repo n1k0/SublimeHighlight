@@ -84,6 +84,8 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
 
     def get_formatter(self, output_type, full=True):
         return pygments.formatters.get_formatter_by_name(output_type,
+            linenos=settings.get('linenos', False),
+            noclasses=settings.get('noclasses', False),
             style=settings.get('theme', 'default'),
             full=settings.get('full', True))
 

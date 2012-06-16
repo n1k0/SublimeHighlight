@@ -23,8 +23,21 @@ Settings
 --------
 
 You can find a dedicated user settings file in the `Preferences > Package
-Settings > SublimeHighlight` menu, where you can choose the Pygments theme to
-use. Example `Settings - User` file:
+Settings > SublimeHighlight` menu where you can customize Pygments settings:
+
+Sample `Settings - User` file:
+
+    {
+        "theme": "monokai",
+        "linenos": "inline",
+        "noclasses": true
+    }
+
+Check out the available options below.
+
+### Themes
+
+You can choose the Pygments theme to use by setting the `theme` option:
 
     {
         "theme": "vim"
@@ -51,13 +64,32 @@ Available themes are:
 - `trac`
 - `vim`
 - `vs`
- 
-You can add your own pygments files by copying the _theme_.py to `Packages/Highlight/pygments`, and adding your theme to the `STYLES_MAP` in `SublimeHighlight/pygments/styles/__init.py__`.  Eg.
 
-    #: Maps style names to 'submodule::classname'.
+**Note: ** You can add your own pygments files by copying the `_theme_.py` to `Packages/Highlight/pygments`, and adding your theme to the `STYLES_MAP` in `SublimeHighlight/pygments/styles/__init.py__`.  Eg.:
+
+    # Maps style names to 'submodule::classname'.
     STYLE_MAP = {
-    'default':  'default::DefaultStyle',
-    'mytheme':  'mytheme::MyThemeStyle',
+        'default':  'default::DefaultStyle',
+        'mytheme':  'mytheme::MyThemeStyle',
+    }
+
+### Line numbering
+
+You can add line nulbering by setting the `linenos` option:
+
+    {
+        "linenos": "inline"
+    }
+
+Accepted values for the `linenos` option are `table`, `inline` or `false` — the latter being the default.
+
+### Inline styling
+
+You can set the rendered HTML code to use inline styles instead of CSS classes:
+
+    {
+        "noclasses": true
+    }
 
 Why this package?
 -----------------

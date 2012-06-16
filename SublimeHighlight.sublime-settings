@@ -2,9 +2,15 @@
     SublimeHighlight default settings
 */
 {
+    /* Pygments theme to use */
+    "theme": "default",
+
     /* Full HTML page to generate? false = just a <div/> */
     "full": true,
 
-    /* Pygments theme to use */
-    "theme": "default"
+    /* Adds line numbering to the ouput; can be "table", "inline" or false */
+    "linenos": false,
+
+    /* Uses inline styles instead of css classes */
+    "noclasses": true
 }
