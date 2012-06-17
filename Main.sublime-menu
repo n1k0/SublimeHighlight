@@ -82,6 +82,14 @@
                             {
                                 "command": "open_file", "args":
                                 {
+                                    "file": "${packages}/Highlight/README.md"
+                                },
+                                "caption": "README"
+                            },
+                            { "caption": "-" },
+                            {
+                                "command": "open_file", "args":
+                                {
                                     "file": "${packages}/Highlight/SublimeHighlight.sublime-settings"
                                 },
                                 "caption": "Settings – Default"
