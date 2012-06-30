@@ -1,5 +1,7 @@
 *.py[co]
 
+package-metadata.json
+
 # Packages
 *.egg
 *.egg-info

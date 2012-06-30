@@ -26,24 +26,8 @@ for s in STYLE_MAP:
 
 DEFAULT_STYLE = "default"
 FORMATS = ('html', 'rtf',)
-HTML_TEMPLATE = u"""<!DOCTYPE html>
-<html>
-<meta charset="%(encoding)s">
-<title>%(title)s</title>
-<style>%(styles)s</style>
-%(highlighted)s
-"""
 
 settings = sublime.load_settings('%s.sublime-settings' % __name__)
-
-
-def get_template(**kwargs):
-    if 'template' in kwargs:
-        template = kwargs['template']
-        del kwargs['template']
-    else:
-        template = HTML_TEMPLATE
-    return template % dict(**kwargs)
 
 
 class SublimeHighlightCommand(sublime_plugin.TextCommand):
@@ -86,7 +70,7 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         return pygments.formatters.get_formatter_by_name(output_type,
             linenos=settings.get('linenos', False),
             noclasses=settings.get('noclasses', False),
-            style=settings.get('theme', 'default'),
+            style=settings.get('theme', DEFAULT_STYLE),
             full=settings.get('full', True))
 
     def get_lexer(self, code=None):
@@ -115,8 +99,13 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         if target == 'external':
             filename = '%s.%s' % (self.view.id(), output_type,)
             tmp_file = self.write_file(filename, pygmented)
-            sublime.status_message(tmp_file)
-            desktop.open(tmp_file)
+            sublime.status_message(u'Written %s preview file: %s'
+                                   % (output_type.upper(), tmp_file))
+            if desktop.get_desktop() == 'Mac OS X':
+                # for some reason desktop.open is broken under OSX Lion
+                subprocess.call("open %s" % tmp_file, shell=True)
+            else:
+                desktop.open(tmp_file)
         elif target == 'clipboard':
             if desktop.get_desktop() == 'Mac OS X':
                 # on mac osx we have `pbcopy` :)
