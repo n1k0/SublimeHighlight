@@ -19,6 +19,11 @@ Several commands are added to SublimeText2 when installed:
 - **SublimeHighlight: copy to clipboard as RTF**: will convert current code to
   raw highlighted RTF and store it into the system clipboard.
 
+This latter command, *Copy to clipboard as RTF*, allows to copy and paste highlighted
+code from Sublime Tex 2 to other softwares like Powerpoint, Keynotes, Word, etc.
+
+![capture](http://f.cl.ly/items/0p0w3w3y2V3P2v1H0q1a/SublimeHighlight.png)
+
 Settings
 --------
 
