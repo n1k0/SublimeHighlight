@@ -36,6 +36,7 @@ Sample `Settings - User` file:
         "theme": "monokai",
         "linenos": "inline",
         "noclasses": true
+        "fontface": "Menlo"
     }
 
 Check out the available options below.
@@ -95,6 +96,15 @@ You can set the rendered HTML code to use inline styles instead of CSS classes:
     {
         "noclasses": true
     }
+
+### Font face
+
+You can set font face used in RTF output by using the fontface setting.
+
+    {
+        "fontface": "Menlo"
+    }
+
 
 Why this package?
 -----------------
