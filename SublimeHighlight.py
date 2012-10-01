@@ -67,19 +67,12 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
             return
 
     def get_formatter(self, output_type, full=True):
-        if output_type == 'rtf':
-                    return pygments.formatters.get_formatter_by_name(output_type,
-                        linenos=settings.get('linenos', False),
-                        noclasses=settings.get('noclasses', False),
-                        style=settings.get('theme', DEFAULT_STYLE),
-                        full=settings.get('full', True),
-                        fontface=settings.get('fontface', "Menlo"))
-        else:
-            return pygments.formatters.get_formatter_by_name(output_type,
-                linenos=settings.get('linenos', False),
-                noclasses=settings.get('noclasses', False),
-                style=settings.get('theme', DEFAULT_STYLE),
-                full=settings.get('full', True))
+        return pygments.formatters.get_formatter_by_name(output_type,
+            linenos=settings.get('linenos', False),
+            noclasses=settings.get('noclasses', False),
+            style=settings.get('theme', DEFAULT_STYLE),
+            full=settings.get('full', True),
+            fontface=settings.get('fontface', ''))
 
     def get_lexer(self, code=None):
         code = code if code is not None else self.code
