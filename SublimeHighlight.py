@@ -87,6 +87,19 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
             lexer = self.guess_lexer_from_syntax()
         if not lexer:
             lexer = pygments.lexers.guess_lexer(code)
+        try:
+            options = settings.get('lexer_options', {}).get(lexer.name)
+        except AttributeError:
+            return lexer
+        if not options:
+            return lexer
+        # handle lexer options
+        for option, value in options.iteritems():
+            try:
+                setattr(lexer, option, value)
+            except AttributeError:
+                sublime.error_message(u'Highlight: unsupported %s lexer option: "%s"'
+                                      % (lexer.name, option))
         return lexer
 
     def highlight(self, output_type):

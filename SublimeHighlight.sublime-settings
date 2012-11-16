@@ -12,5 +12,12 @@
     "linenos": false,
 
     /* Uses inline styles instead of css classes */
-    "noclasses": true
+    "noclasses": true,
+
+    /* Lexer options */
+    "lexer_options": {
+        "PHP": {
+            "startinline": true
+        }
+    }
 }

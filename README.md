@@ -96,6 +96,18 @@ You can set the rendered HTML code to use inline styles instead of CSS classes:
         "noclasses": true
     }
 
+### Lexer options
+
+SublimeHighlight supports [Pygments lexer options](http://pygments.org/docs/lexers/). To set an option for a given lexer, eg. `PHP`:
+
+    {
+        "lexer_options": {
+            "PHP": {
+                "startinline": true
+            }
+        }
+    }
+
 Why this package?
 -----------------
 
