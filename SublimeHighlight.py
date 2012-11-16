@@ -16,6 +16,7 @@ import tempfile
 
 from pygments import highlight
 from pygments.lexers import *
+from pygments.lexers._phpbuiltins import *
 from pygments.formatters import *
 from pygments.styles import STYLE_MAP
 
