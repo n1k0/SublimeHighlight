@@ -108,6 +108,34 @@ SublimeHighlight supports [Pygments lexer options](http://pygments.org/docs/lexe
         }
     }
 
+Setting up shortcuts
+--------------------
+
+This is a sample key binding for copying RTF highlighted code contents to your clipboard by pressing <kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>c</kbd>:
+
+```json
+[
+    { "keys": ["ctrl+alt+c"],
+      "command": "sublime_highlight",
+      "args": { "target": "clipboard",
+                "output_type": "rtf"
+    }},
+]
+```
+
+You can combine the `target` and `output_type` argument values to achieve the stuff you want. Possible values are:
+
+`target`:
+
+- `sublime`: new Sublime Text 2 tab
+- `external`: new external file
+- `clipboard`: system clipboard
+
+`output_type`:
+
+- `rtf`: RTF format
+- `html`: HTML format
+
 Why this package?
 -----------------
 
