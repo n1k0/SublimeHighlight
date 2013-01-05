@@ -1,6 +1,6 @@
 [
     {
-        "caption": "Copy to clipboard as HTML",
+        "caption": "Copy as HTML",
         "command": "sublime_highlight",
         "args": {
             "target": "clipboard",
@@ -8,7 +8,7 @@
         }
     },
     { 
-        "caption": "Copy to clipboard as RTF",
+        "caption": "Copy as RTF",
         "command": "sublime_highlight",
         "args": {
             "target": "clipboard",
