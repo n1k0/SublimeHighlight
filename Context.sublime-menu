@@ -1,0 +1,18 @@
+[
+    {
+        "caption": "Copy as HTML",
+        "command": "sublime_highlight",
+        "args": {
+            "target": "clipboard",
+            "output_type": "html"
+        }
+    },
+    { 
+        "caption": "Copy as RTF",
+        "command": "sublime_highlight",
+        "args": {
+            "target": "clipboard",
+            "output_type": "rtf"
+        }
+    }
+]
