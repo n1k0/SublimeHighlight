@@ -16,14 +16,18 @@ import tempfile
 
 from pygments import highlight
 from pygments.lexers import *
-from pygments.lexers._phpbuiltins import *
 from pygments.formatters import *
 from pygments.styles import STYLE_MAP
 
+
 # Don't judge me. Just don't. If you knew, you wouldn't.
+__lexers = ['_asybuiltins', '_clbuiltins', '_lassobuiltins', '_luabuiltins',
+    '_mapping', '_openedgebuiltins', '_phpbuiltins', '_postgres_builtins',
+    '_scilab_builtins', '_sourcemodbuiltins', '_stan_builtins', '_vimbuiltins']
+for l in __lexers:
+    __import__('pygments.lexers.%s' % l)
 for s in STYLE_MAP:
     __import__('pygments.styles.%s' % s)
-
 
 DEFAULT_STYLE = "default"
 FORMATS = ('html', 'rtf',)
