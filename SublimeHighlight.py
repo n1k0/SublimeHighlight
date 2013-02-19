@@ -13,12 +13,12 @@ import sublime
 import sublime_plugin
 import subprocess
 import tempfile
+import winclip
 
 from pygments import highlight
 from pygments.lexers import *
 from pygments.formatters import *
 from pygments.styles import STYLE_MAP
-
 
 # Don't judge me. Just don't. If you knew, you wouldn't.
 __lexers = ['_asybuiltins', '_clbuiltins', '_lassobuiltins', '_luabuiltins',
@@ -132,6 +132,8 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
                 subprocess.call("cat %s | pbcopy -Prefer %s"
                                 % (tmp_file, output_type,), shell=True)
                 os.remove(tmp_file)
+            elif desktop.get_desktop() == 'Windows':
+                winclip.Paste(pygmented, output_type, self.code)
             else:
                 sublime.set_clipboard(pygmented)
         elif target == 'sublime':
