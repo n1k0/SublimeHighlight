@@ -13,7 +13,8 @@ import sublime
 import sublime_plugin
 import subprocess
 import tempfile
-import winclip
+if desktop.get_desktop() == 'Windows':
+    import winclip
 
 from pygments import highlight
 from pygments.lexers import *
@@ -71,12 +72,12 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         except pygments.util.ClassNotFound:
             return
 
-    def get_formatter(self, output_type, full=True):
+    def get_formatter(self, output_type, full=settings.get('full', True)):
         return pygments.formatters.get_formatter_by_name(output_type,
             linenos=settings.get('linenos', False),
             noclasses=settings.get('noclasses', False),
             style=settings.get('theme', DEFAULT_STYLE),
-            full=settings.get('full', True))
+            full=full)
 
     def get_lexer(self, code=None):
         code = code if code is not None else self.code
@@ -106,34 +107,45 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
                                       % (lexer.name, option))
         return lexer
 
-    def highlight(self, output_type):
+    def highlight(self, output_type, full=True):
         return highlight(self.code, self.get_lexer(),
-            self.get_formatter(output_type))
+            self.get_formatter(output_type, full))
 
     def run(self, edit, target='external', output_type='html'):
         output_type = output_type if output_type in FORMATS else 'html'
-        pygmented = self.highlight(output_type)
+        platform = desktop.get_desktop()
+
+        if platform == 'Windows' and output_type == 'html' and target == 'clipboard':  # Windows HTML Clipboard should be a document fragment
+            full = False
+        else:
+            full = settings.get('full', True)
+        pygmented = self.highlight(output_type, full)
 
         if target == 'external':
             filename = '%s.%s' % (self.view.id(), output_type,)
             tmp_file = self.write_file(filename, pygmented)
             sublime.status_message(u'Written %s preview file: %s'
                                    % (output_type.upper(), tmp_file))
-            if desktop.get_desktop() == 'Mac OS X':
+            if platform == 'Mac OS X':
                 # for some reason desktop.open is broken under OSX Lion
                 subprocess.call("open %s" % tmp_file, shell=True)
             else:
                 desktop.open(tmp_file)
         elif target == 'clipboard':
-            if desktop.get_desktop() == 'Mac OS X':
+            if platform == 'Mac OS X':
                 # on mac osx we have `pbcopy` :)
                 filename = '%s.%s' % (self.view.id(), output_type,)
                 tmp_file = self.write_file(filename, pygmented)
                 subprocess.call("cat %s | pbcopy -Prefer %s"
                                 % (tmp_file, output_type,), shell=True)
                 os.remove(tmp_file)
-            elif desktop.get_desktop() == 'Windows':
-                winclip.Paste(pygmented, output_type, self.code)
+            elif platform == 'Windows':
+                if self.view.line_endings != 'Windows':
+                    pygmented = re.sub("\r(?!\n)|(?<!\r)\n", "\r\n", pygmented)
+                    plaintext = re.sub("\r(?!\n)|(?<!\r)\n", "\r\n", self.code)
+                else:
+                    plaintext = self.code
+                winclip.Paste(pygmented, output_type, plaintext)
             else:
                 sublime.set_clipboard(pygmented)
         elif target == 'sublime':

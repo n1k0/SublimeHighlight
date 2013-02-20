@@ -1,10 +1,12 @@
-#Based off of http://stackoverflow.com/a/3429034/334717
+# Based off of http://stackoverflow.com/a/3429034/334717
+# and http://pywin32.hg.sourceforge.net/hgweb/pywin32/pywin32/file/4c7503da2658/win32/src/win32clipboardmodule.cpp
 
 import ctypes
+from ctypes import c_int
 
-#Get required functions, strcpy..
+# Get required functions, strcpy..
 strcpy = ctypes.cdll.msvcrt.strcpy
-ocb = ctypes.windll.user32.OpenClipboard    #Basic Clipboard functions
+ocb = ctypes.windll.user32.OpenClipboard  # Basic Clipboard functions
 ecb = ctypes.windll.user32.EmptyClipboard
 gcd = ctypes.windll.user32.GetClipboardData
 scd = ctypes.windll.user32.SetClipboardData
@@ -13,7 +15,7 @@ ccb = ctypes.windll.user32.CloseClipboard
 ga = ctypes.windll.kernel32.GlobalAlloc    # Global Memory allocation
 gl = ctypes.windll.kernel32.GlobalLock     # Global Memory Locking
 gul = ctypes.windll.kernel32.GlobalUnlock
-GMEM_DDESHARE = 0x2000
+GHND = 0x0042
 
 CF_HTML = rcf("HTML Format")
 CF_RTF = rcf("Rich Text Format")
@@ -31,31 +33,59 @@ def Get():
     return data
 
 
-def Paste(data, type, plaintext):
-    plaintext = plaintext.encode('cp1252')
+def Paste(data, type, plaintext=None):
+    data = data.encode('cp1252')
+    if plaintext is None:
+        plaintext = data
+    else:
+        plaintext = plaintext.encode('cp1252')
+
+    if type == 'html':
+        data = EncodeHTML(data)
+
     ocb(None)  # Open Clip, Default task
     ecb()
 
-    hCd = ga(GMEM_DDESHARE, len(bytes(data)) + 1)
-    hPd = ga(GMEM_DDESHARE, len(bytes(plaintext)) + 1)
-
-    pchData = gl(hCd)
-    ptxData = gl(hPd)
-
-    strcpy(ctypes.c_char_p(pchData), bytes(data))
-    strcpy(ctypes.c_char_p(ptxData), bytes(plaintext))
-
-    gul(hCd)
-    gul(hPd)
-
     if type == 'rtf':
-        scd(1, hPd)
-        scd(CF_RTF, hCd, 0, False)
-        scd(CF_RTFWO, hCd, 0, False)
-    elif type == 'text':
-        scd(1, hCd)
+        Put(data, CF_RTF)
+        Put(data, CF_RTFWO)
     elif type == 'html':
-        scd(1, hPd)
-        scd(CF_HTML, hCd, 0, False)
+        Put(data, CF_HTML)
 
+    Put(plaintext, CF_TEXT)
     ccb()
+
+
+def Put(data, format):
+    hCd = ga(GHND, len(bytes(data)) + 1)
+    pchData = gl(hCd)
+    strcpy(ctypes.c_char_p(pchData), bytes(data))
+    gul(hCd)
+    scd(c_int(format), hCd, 0, False)
+
+
+# Based off of http://code.activestate.com/recipes/474121-getting-html-from-the-windows-clipboard/
+def EncodeHTML(fragment):
+    fragment = fragment.encode('utf-8')
+    DEFAULT_HTML_BODY = \
+        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">" \
+        "<HTML><HEAD></HEAD><BODY><!--StartFragment-->%s<!--EndFragment--></BODY></HTML>"
+
+    MARKER_BLOCK_OUTPUT = \
+        "Version:0.9\r\n" \
+        "StartHTML:%09d\r\n" \
+        "EndHTML:%09d\r\n" \
+        "StartFragment:%09d\r\n" \
+        "EndFragment:%09d\r\n"
+
+    html = DEFAULT_HTML_BODY % fragment
+    fragmentStart = html.index(fragment)
+    fragmentEnd = fragmentStart + len(fragment)
+
+    dummyPrefix = MARKER_BLOCK_OUTPUT % (0, 0, 0, 0)
+    lenPrefix = len(dummyPrefix)
+
+    prefix = MARKER_BLOCK_OUTPUT % (lenPrefix, len(html) + lenPrefix,
+                    fragmentStart + lenPrefix, fragmentEnd + lenPrefix)
+
+    return (prefix + html)
