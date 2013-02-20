@@ -1,11 +1,15 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 # Based off of http://stackoverflow.com/a/3429034/334717
 # and http://pywin32.hg.sourceforge.net/hgweb/pywin32/pywin32/file/4c7503da2658/win32/src/win32clipboardmodule.cpp
 
 import ctypes
-from ctypes import c_int
+from ctypes import c_int, c_char, c_char_p, c_wchar, c_wchar_p, sizeof
 
 # Get required functions, strcpy..
 strcpy = ctypes.cdll.msvcrt.strcpy
+wcscpy = ctypes.cdll.msvcrt.wcscpy
 ocb = ctypes.windll.user32.OpenClipboard  # Basic Clipboard functions
 ecb = ctypes.windll.user32.EmptyClipboard
 gcd = ctypes.windll.user32.GetClipboardData
@@ -21,27 +25,30 @@ CF_HTML = rcf("HTML Format")
 CF_RTF = rcf("Rich Text Format")
 CF_RTFWO = rcf("Rich Text Format Without Objects")
 CF_TEXT = 1
+CF_UNICODETEXT = 13
 
 
 def Get():
     ocb(None)  # Open Clip, Default task
     pcontents = gcd(1)  # 1 means CF_TEXT.. too lazy to get the token thingy ...
-    data = ctypes.c_char_p(pcontents).value
+    data = c_char_p(pcontents).value
     #gul(pcontents) ?
     ccb()
 
     return data
 
 
-def Paste(data, type, plaintext=None):
-    data = data.encode('cp1252')
+def Paste(data, type='text', plaintext=None):
     if plaintext is None:
         plaintext = data
-    else:
-        plaintext = plaintext.encode('cp1252')
 
     if type == 'html':
         data = EncodeHTML(data)
+    else:
+        data = data.encode('cp1252', 'replace')
+
+    unicodetext = plaintext.encode('utf_16')
+    plaintext = plaintext.encode('cp1252', 'replace')
 
     ocb(None)  # Open Clip, Default task
     ecb()
@@ -53,20 +60,30 @@ def Paste(data, type, plaintext=None):
         Put(data, CF_HTML)
 
     Put(plaintext, CF_TEXT)
+    Put(unicodetext, CF_UNICODETEXT)
     ccb()
 
 
 def Put(data, format):
-    hCd = ga(GHND, len(bytes(data)) + 1)
+    if format == CF_UNICODETEXT:
+        hCd = ga(GHND, len(bytes(data)) + sizeof(c_char()))
+    else:
+        hCd = ga(GHND, len(bytes(data)) + sizeof(c_wchar()))
+
+    hCd = ga(GHND, len(bytes(data)) + 2)
     pchData = gl(hCd)
-    strcpy(ctypes.c_char_p(pchData), bytes(data))
+
+    if format == CF_UNICODETEXT:
+        wcscpy(c_wchar_p(pchData), bytes(data))
+    else:
+        strcpy(c_char_p(pchData), bytes(data))
     gul(hCd)
     scd(c_int(format), hCd, 0, False)
 
 
 # Based off of http://code.activestate.com/recipes/474121-getting-html-from-the-windows-clipboard/
 def EncodeHTML(fragment):
-    fragment = fragment.encode('utf-8')
+    fragment = fragment.encode('utf-8', 'replace')
     DEFAULT_HTML_BODY = \
         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">" \
         "<HTML><HEAD></HEAD><BODY><!--StartFragment-->%s<!--EndFragment--></BODY></HTML>"
