@@ -36,6 +36,7 @@ Sample `Settings - User` file:
         "theme": "monokai",
         "linenos": "inline",
         "noclasses": true
+        "fontface": "Menlo"
     }
 
 Check out the available options below.
@@ -108,6 +109,14 @@ SublimeHighlight supports [Pygments lexer options](http://pygments.org/docs/lexe
         }
     }
 
+### Font face
+
+You can set font face used in RTF output by using the fontface setting.
+
+    {
+        "fontface": "Menlo"
+    }
+
 Setting up shortcuts
 --------------------
 
@@ -135,6 +144,7 @@ You can combine the `target` and `output_type` argument values to achieve the st
 
 - `rtf`: RTF format
 - `html`: HTML format
+
 
 Why this package?
 -----------------

@@ -76,7 +76,8 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
             linenos=settings.get('linenos', False),
             noclasses=settings.get('noclasses', False),
             style=settings.get('theme', DEFAULT_STYLE),
-            full=settings.get('full', True))
+            full=settings.get('full', True),
+            fontface=settings.get('fontface', ''))
 
     def get_lexer(self, code=None):
         code = code if code is not None else self.code
