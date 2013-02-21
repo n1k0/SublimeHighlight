@@ -13,13 +13,14 @@ import sublime
 import sublime_plugin
 import subprocess
 import tempfile
-if desktop.get_desktop() == 'Windows':
-    import winclip
 
 from pygments import highlight
 from pygments.lexers import *
 from pygments.formatters import *
 from pygments.styles import STYLE_MAP
+
+if desktop.get_desktop() == 'Windows':
+    import winclip
 
 # Don't judge me. Just don't. If you knew, you wouldn't.
 __lexers = ['_asybuiltins', '_clbuiltins', '_lassobuiltins', '_luabuiltins',
@@ -32,6 +33,7 @@ for s in STYLE_MAP:
 
 DEFAULT_STYLE = "default"
 FORMATS = ('html', 'rtf',)
+WIN_CR_RE = re.compile(r"\r(?!\n)|(?<!\r)\n")
 
 settings = sublime.load_settings('%s.sublime-settings' % __name__)
 
@@ -115,10 +117,11 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         output_type = output_type if output_type in FORMATS else 'html'
         platform = desktop.get_desktop()
 
-        if platform == 'Windows' and output_type == 'html' and target == 'clipboard':  # Windows HTML Clipboard should be a document fragment
-            full = False
-        else:
-            full = settings.get('full', True)
+        # html clipboard output on windows should not be self-contained
+        win = all([platform == 'Windows', output_type == 'html',
+            target == 'clipboard'])
+        full = False if win else settings.get('full', True)
+
         pygmented = self.highlight(output_type, full)
 
         if target == 'external':
@@ -141,8 +144,8 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
                 os.remove(tmp_file)
             elif platform == 'Windows':
                 if self.view.line_endings != 'Windows':
-                    pygmented = re.sub("\r(?!\n)|(?<!\r)\n", "\r\n", pygmented)
-                    plaintext = re.sub("\r(?!\n)|(?<!\r)\n", "\r\n", self.code)
+                    pygmented = WIN_CR_RE.sub("\r\n", pygmented)
+                    plaintext = WIN_CR_RE.sub("\r\n", self.code)
                 else:
                     plaintext = self.code
                 winclip.Paste(pygmented, output_type, plaintext)
