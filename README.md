@@ -35,7 +35,7 @@ Sample `Settings - User` file:
     {
         "theme": "monokai",
         "linenos": "inline",
-        "noclasses": true
+        "noclasses": true,
         "fontface": "Menlo"
     }
 
