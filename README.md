@@ -71,6 +71,10 @@ Available themes are:
 - `vim`
 - `vs`
 
+Here's a screenshot of what some example code looks like with different themes:
+
+![Themes Screenshot](https://raw.github.com/LeEnno/SublimeHighlight/master/themes.png)
+
 **Note:** You can add your own pygments files by copying the `_theme_.py` to `Packages/Highlight/pygments/styles`, and adding your theme to the `STYLES_MAP` in `SublimeHighlight/pygments/styles/__init__.py`.  Eg.:
 
     # Maps style names to 'submodule::classname'.
