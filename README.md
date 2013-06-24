@@ -73,7 +73,7 @@ Available themes are:
 
 Here's a screenshot of what some example code looks like with different themes:
 
-![Themes Screenshot](https://raw.github.com/LeEnno/SublimeHighlight/master/themes.png)
+![Themes Screenshot](https://raw.github.com/n1k0/SublimeHighlight/master/themes.png)
 
 **Note:** You can add your own pygments files by copying the `_theme_.py` to `Packages/Highlight/pygments/styles`, and adding your theme to the `STYLES_MAP` in `SublimeHighlight/pygments/styles/__init__.py`.  Eg.:
 
