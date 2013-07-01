@@ -1,35 +1,18 @@
 # -*- coding: utf-8 -*-
 
-"""
-    TODO:
-    - customize rendered HTML to ease choosing a new theme
-"""
-
-import desktop
 import os
-import pygments
 import re
 import sublime
 import sublime_plugin
 import subprocess
 import tempfile
 
-from pygments import highlight
-from pygments.lexers import *
-from pygments.formatters import *
-from pygments.styles import STYLE_MAP
+from .HighlightLib import desktop
+from .HighlightLib import pygments
+
 
 if desktop.get_desktop() == 'Windows':
-    import winclip
-
-# Don't judge me. Just don't. If you knew, you wouldn't.
-__lexers = ['_asybuiltins', '_clbuiltins', '_lassobuiltins', '_luabuiltins',
-    '_mapping', '_openedgebuiltins', '_phpbuiltins', '_postgres_builtins',
-    '_scilab_builtins', '_sourcemodbuiltins', '_stan_builtins', '_vimbuiltins']
-for l in __lexers:
-    __import__('pygments.lexers.%s' % l)
-for s in STYLE_MAP:
-    __import__('pygments.styles.%s' % s)
+    from .HighlightLib import winclip
 
 DEFAULT_STYLE = "default"
 FORMATS = ('html', 'rtf',)
@@ -111,7 +94,7 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         return lexer
 
     def highlight(self, output_type, full=True):
-        return highlight(self.code, self.get_lexer(),
+        return pygments.highlight(self.code, self.get_lexer(),
             self.get_formatter(output_type, full))
 
     def run(self, edit, target='external', output_type='html'):
