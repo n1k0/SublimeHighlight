@@ -102,11 +102,11 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         if not options:
             return lexer
         # handle lexer options
-        for option, value in options.iteritems():
+        for option, value in options.items():
             try:
                 setattr(lexer, option, value)
             except AttributeError:
-                sublime.error_message(u'Highlight: unsupported %s lexer option: "%s"'
+                sublime.error_message('Highlight: unsupported %s lexer option: "%s"'
                                       % (lexer.name, option))
         return lexer
 
@@ -128,7 +128,7 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         if target == 'external':
             filename = '%s.%s' % (self.view.id(), output_type,)
             tmp_file = self.write_file(filename, pygmented)
-            sublime.status_message(u'Written %s preview file: %s'
+            sublime.status_message('Written %s preview file: %s'
                                    % (output_type.upper(), tmp_file))
             if platform == 'Mac OS X':
                 # for some reason desktop.open is broken under OSX Lion
@@ -160,7 +160,7 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
             new_view.insert(new_edit, 0, pygmented)
             new_view.end_edit(new_edit)
         else:
-            sublime.error_message(u'Unsupported target "%s"' % target)
+            sublime.error_message('Unsupported target "%s"' % target)
 
     def write_file(self, filename, contents, encoding=None):
         """Writes highlighted contents onto the filesystem."""
