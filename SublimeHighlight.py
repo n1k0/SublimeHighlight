@@ -25,7 +25,6 @@ settings = sublime.load_settings('%s.sublime-settings' % __name__)
 
 class OpenHighlightCommand(sublime_plugin.TextCommand):
     def run(self, edit, content):
-        print('Hello World!')
         self.view.insert(edit, 0, content)
 
 class SublimeHighlightCommand(sublime_plugin.TextCommand):
@@ -147,9 +146,6 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
             if output_type == 'html':
                 new_view.set_syntax_file('Packages/HTML/HTML.tmLanguage')
             new_view.run_command("open_highlight", {'content': pygmented})
-            #new_edit = new_view.begin_edit()
-            #new_view.insert(new_edit, 0, pygmented)
-            #new_view.end_edit(new_edit)
         else:
             sublime.error_message('Unsupported target "%s"' % target)
 
