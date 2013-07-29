@@ -21,7 +21,10 @@ DEFAULT_STYLE = "default"
 FORMATS = ('html', 'rtf',)
 WIN_CR_RE = re.compile(r"\r(?!\n)|(?<!\r)\n")
 
-settings = sublime.load_settings('%s.sublime-settings' % __name__)
+# XXX for some reason ST3 thinks current __name__ is
+#     SublimeHightlight.SublimeHighlight
+__current__name__ = __name__.split('.')[0]
+settings = sublime.load_settings('%s.sublime-settings' % __current__name__)
 
 class OpenHighlightCommand(sublime_plugin.TextCommand):
     def run(self, edit, content):
