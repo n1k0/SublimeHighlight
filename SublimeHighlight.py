@@ -153,7 +153,7 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         """Writes highlighted contents onto the filesystem."""
         encoding = encoding if encoding is not None else self.encoding
         tmp_fullpath = os.path.join(tempfile.gettempdir(), filename)
-        tmp_file = open(tmp_fullpath, 'w')
+        tmp_file = open(tmp_fullpath, 'wb')
         tmp_file.write(contents.encode(encoding))
         tmp_file.close()
         return tmp_fullpath
