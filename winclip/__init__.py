@@ -70,7 +70,6 @@ def Put(data, format):
     else:
         hCd = ga(GHND, len(bytes(data)) + sizeof(c_wchar()))
 
-    hCd = ga(GHND, len(bytes(data)) + 2)
     pchData = gl(hCd)
 
     if format == CF_UNICODETEXT:
