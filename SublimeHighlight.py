@@ -21,10 +21,9 @@ DEFAULT_STYLE = "default"
 FORMATS = ('html', 'rtf',)
 WIN_CR_RE = re.compile(r"\r(?!\n)|(?<!\r)\n")
 
-# XXX for some reason ST3 thinks current __name__ is
-#     SublimeHightlight.SublimeHighlight
-__current__name__ = __name__.split('.')[0]
-settings = sublime.load_settings('%s.sublime-settings' % __current__name__)
+def settings_get(name, default=None):
+    plugin_settings = sublime.load_settings('SublimeHighlight.sublime-settings')
+    return plugin_settings.get(name, default)
 
 class OpenHighlightCommand(sublime_plugin.TextCommand):
     def run(self, edit, content):
@@ -68,11 +67,11 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
 
     def get_formatter(self, output_type, full=True):
         return pygments.formatters.get_formatter_by_name(output_type,
-            linenos=settings.get('linenos', False),
-            noclasses=settings.get('noclasses', False),
-            style=settings.get('theme', DEFAULT_STYLE),
-            full=settings.get('full', full),
-            fontface=settings.get('fontface', ''))
+            linenos=settings_get('linenos', False),
+            noclasses=settings_get('noclasses', False),
+            style=settings_get('theme', DEFAULT_STYLE),
+            full=settings_get('full', full),
+            fontface=settings_get('fontface', ''))
 
     def get_lexer(self, code=None):
         code = code if code is not None else self.code
@@ -88,7 +87,7 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         if not lexer:
             lexer = pygments.lexers.guess_lexer(code)
         try:
-            options = settings.get('lexer_options', {}).get(lexer.name)
+            options = settings_get('lexer_options', {}).get(lexer.name)
         except AttributeError:
             return lexer
         if not options:
@@ -113,7 +112,7 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         # html clipboard output on windows should not be self-contained
         win = all([platform == 'Windows', output_type == 'html',
             target == 'clipboard'])
-        full = False if win else settings.get('full', True)
+        full = False if win else settings_get('full', True)
 
         pygmented = self.highlight(output_type, full)
 
