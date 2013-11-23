@@ -1,8 +1,14 @@
 SublimeHighlight
 ================
 
-*Sublime Text 3 users:* a `python3` branch is also available. Just `git checkout python3` 
-from the root of your package installation to use in in ST3.
+*Sublime Text 3 users:* a `python3` branch is also available. Just `git checkout python3`
+from the root of your package installation to use in in ST3. If you upgrade from a previous
+ST2 installation or encounter problems with the package, please proceed as detailed below:
+
+- Remove the package, if installed, using Package Control.
+- Add a repository: `https://github.com/n1k0/SublimeHighlight/tree/python3`
+- Install `SublimeHighlight` with Package Control. It should pull the correct branch from Github.
+- Restart Sublime Text 3
 
 This [SublimeText2](http://www.sublimetext.com/2) package allows to highlight &
 export currently edited code to HTML or RTF using [Pygments](http://pygments.org/).
