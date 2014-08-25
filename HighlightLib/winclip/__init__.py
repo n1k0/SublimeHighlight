@@ -45,7 +45,6 @@ def Paste(data, type='text', plaintext=None):
 
     if type == 'rtf':
         Put(data, CF_RTF)
-        Put(data, CF_RTFWO)
     elif type == 'html':
         Put(data, CF_HTML)
 
