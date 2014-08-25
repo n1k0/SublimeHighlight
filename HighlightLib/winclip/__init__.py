@@ -49,8 +49,6 @@ def Paste(data, type='text', plaintext=None):
     elif type == 'html':
         Put(data, CF_HTML)
 
-    Put(plaintext, CF_TEXT)
-    Put(unicodetext, CF_UNICODETEXT)
     ccb()
 
 
