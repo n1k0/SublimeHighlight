@@ -56,7 +56,7 @@ def Put(data, format):
     data = bytes(data)
     # Allocate global memory, including space for terminator.
     # GHND is GMEM_MOVEABLE (required) and GMEM_ZEROINIT (convenient).
-    hCd = ga(c_int(GHND), len(data) + sizeof(c_wchar()))
+    hCd = ga(c_int(GHND), c_size_t(len(data) + sizeof(c_wchar())))
 
     # Lock the memory and get a pointer to it.
     pchData = gl(c_void_p(hCd))
