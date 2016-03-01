@@ -52,6 +52,12 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
             encoding = 'utf-8'
         elif encoding == 'Western (Windows 1252)':
             encoding = 'windows-1252'
+        else:
+            i = encoding.find(' with BOM')
+
+            if i != -1:
+                encoding = encoding[:i]
+
         return encoding
 
     @property
