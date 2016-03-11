@@ -128,12 +128,41 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
                 desktop.open(tmp_file)
         elif target == 'clipboard':
             if platform == 'Mac OS X':
-                # on mac osx we have `pbcopy` :)
                 filename = '%s.%s' % (self.view.id(), output_type,)
                 tmp_file = self.write_file(filename, pygmented)
-                subprocess.call("cat %s | pbcopy -Prefer %s"
-                                % (tmp_file, output_type,), shell=True)
-                os.remove(tmp_file)
+
+                # If copying RTF, we also need to copy as HTML for browser rich
+                # text editors like Google Docs, email and other WYSIWYG editors
+                if output_type == 'rtf':
+                    # Create HTML & txt files
+                    pyg_html = self.highlight('html', False)
+                    html_filename = '%s.html' % self.view.id()
+                    html_file = self.write_file(html_filename, pyg_html)
+
+                    txt_filename = '%s.txt' % self.view.id()
+                    txt_file = self.write_file(txt_filename, self.code)
+
+                    # Add RTF, HTML and TXT to the clipboard
+                    cwd = os.path.dirname(os.path.realpath(__file__))
+                    script = os.path.join(cwd, 'html_rft_clipboard.scpt')
+                    out = subprocess.call("osascript '%s' '%s' '%s' '%s'" % (
+                        script,
+                        txt_file,
+                        html_file,
+                        tmp_file), shell=True)
+
+                    # Cleanup
+                    os.remove(txt_file)
+                    os.remove(html_file)
+                    os.remove(tmp_file)
+
+                # For html, use `pbcopy` :)
+                else:
+                    filename = '%s.%s' % (self.view.id(), output_type,)
+                    tmp_file = self.write_file(filename, pygmented)
+                    subprocess.call("cat %s | pbcopy -Prefer %s"
+                                    % (tmp_file, output_type,), shell=True)
+                    os.remove(tmp_file)
             elif platform == 'Windows':
                 if self.view.line_endings != 'Windows':
                     pygmented = WIN_CR_RE.sub("\r\n", pygmented)
