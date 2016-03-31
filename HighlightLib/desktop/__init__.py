@@ -260,7 +260,7 @@ def open(url, desktop=None, wait=0):
         cmd = ["kfmclient", "exec", url]
 
     elif desktop_in_use == "GNOME":
-        cmd = ["gnome-open", url]
+        cmd = ["xdg-open", url]
 
     elif desktop_in_use == "XFCE":
         cmd = ["exo-open", url]
