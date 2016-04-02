@@ -615,9 +615,9 @@ class HtmlFormatter(Formatter):
                     num += 1
             else:
                 for t, line in lines:
-                    yield 1, ('<span style="background-color: #f0f0f0; '
+                    yield 1, ('<span style="background-color: %s; '
                               'padding: 0 5px 0 5px">%*s</span> ' % (
-                              mw, (num%st and ' ' or num)) + line)
+                              self.style.background_color, mw, (num%st and ' ' or num)) + line)
                     num += 1
         elif sp:
             for t, line in lines:
