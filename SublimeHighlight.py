@@ -57,7 +57,7 @@ class SublimeHighlightCommand(sublime_plugin.TextCommand):
         syntax = self.view.settings().get('syntax')
         if not syntax:
             return
-        match = re.match(r"Packages/.*/(.*?)\.tmLanguage$", syntax)
+        match = re.match(r"Packages/.*/(.*?)\.(?:tmLanguage|sublime-syntax)$", syntax)
         if not match:
             return
         try:
